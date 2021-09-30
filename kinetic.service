@@ -1,0 +1,8 @@
+[Unit]
+Description=Kinetic Service
+
+[Service]
+ExecStart=/opt/kinetic/startKinetic.sh
+
+[Install]
+WantedBy=multi-user.target
