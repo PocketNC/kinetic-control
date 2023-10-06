@@ -8,6 +8,12 @@ async function getBranch() {
   const { stdout: deviceRaw } = await execPromise("${POCKETNC_DIRECTORY}/Settings/device.py");
   const device = deviceRaw.trim().toLowerCase();
 
+  if(device === "bbg") {
+    // we've seen certain Beaglebone Blacks in the field report being Beaglebone Greens
+    // so treat them as a beaglebone black. see SOFT-877
+    return "kinetic-control/bbb/prod";
+  }
+
   return `kinetic-control/${device}/prod`;
 }
 
