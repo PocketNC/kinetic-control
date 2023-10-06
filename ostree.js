@@ -3,7 +3,13 @@ const util = require("util");
 const execPromise = util.promisify(exec);
 
 const OS = 'kinetic';
-const BBB_BRANCH = 'kinetic-control/bbb/prod';
+
+async function getBranch() {
+  const { stdout: deviceRaw } = await execPromise("${POCKETNC_DIRECTORY}/Settings/device.py");
+  const device = deviceRaw.trim().toLowerCase();
+
+  return `kinetic-control/${device}/prod`;
+}
 
 async function getDeployments() {
   const { stdout: adminStatus } = await execPromise("ostree admin status");
@@ -49,8 +55,7 @@ async function getLatest() {
     }
   }
 
-  // TODO - dynamically choose branch based on detected board
-  const branch = BBB_BRANCH; 
+  const branch = await getBranch(); 
   const latest = {
     commit: summary[branch].commit
   };
